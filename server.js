@@ -13,14 +13,12 @@ app.use(express.json());
 
 // import routes
 
-const welcomeRoute = require('./routes/welcome');
 const productsRoute = require('./routes/products');
-const contentsRoute = require('./routes/contents');
-// const maxPriceProduct = require('./routes/maxPriceProduct');
+const productsMaxPrice = require('./routes/productsMaxPrice');
 
-app.use('/welcome', welcomeRoute);
 app.use('/products', productsRoute);
-app.use('/contents', contentsRoute);
+app.use('/products/maxPrice', productsMaxPrice);
+
 
 const PORT = process.env.PORT || 5000;
 

@@ -11,8 +11,5 @@ router
 .route('/:slug')
 .get(productsControllers.getSingleProduct);
 
-// router
-// .route('/maxPrice')
-// .get(productsControllers.getMaxPriceProduct);
 
 module.exports = router;
