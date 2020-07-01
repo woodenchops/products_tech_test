@@ -20,7 +20,7 @@ const SingleProduct = (props) => {
         <div>
             <h1>hello from single product {productID}</h1>
             <ul>
-            {(singleProduct) && (
+            {(singleProduct.length > 0) ? (
                
                 singleProduct.map((item) => (
                     <Fragment>
@@ -29,7 +29,7 @@ const SingleProduct = (props) => {
                     </Fragment>
                 ))
                 
-            )}
+            ): <p>No item with that ID {productID} exists</p>}
             </ul>
         </div>
      );

@@ -39,7 +39,9 @@ const AllProducts = () => {
             }}>Next</button>
 
             <p>check the maxPrice of a product by visiting: "http://localhost:3000/maxPrice/*priceNumber*"</p>
-            <p>example: http://localhost:3000/maxPrice/0.75 </p>
+            <p>example: http://localhost:3000/maxPrice/0.75</p>
+            <p>You can search for a single product by the product ID:</p>
+            <p>example: http://localhost:3000/products/4</p>
 
         </main>
      );
