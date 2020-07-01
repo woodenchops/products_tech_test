@@ -37,6 +37,10 @@ const AllProducts = () => {
             <button onClick={() => {
                 (productsShowCount === 3) ? alert('No more Products') : setProductsCount(productsShowCount + 1) 
             }}>Next</button>
+
+            <p>check the maxPrice of a product by visiting: "http://localhost:3000/maxPrice/*priceNumber*"</p>
+            <p>example: http://localhost:3000/maxPrice/0.75 </p>
+
         </main>
      );
 }
