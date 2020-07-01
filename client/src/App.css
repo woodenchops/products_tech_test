@@ -1,0 +1,23 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  padding: 1rem;
+}
+
+ul,ol {
+  padding-left: 1rem;
+}
+
+ul li {
+  margin: 10px 0;
+  list-style: none;
+}
+
+.all-products button {
+  margin-right: 10px;
+  padding: 5px;
+}

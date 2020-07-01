@@ -1,0 +1,10 @@
+.welcome-page {
+    text-align: center;
+  }
+  
+  .welcome-heading {
+    font-family: "Lucida Sans", sans-serif;
+    background-color: lightgray;
+    display: inline-block;
+    padding: 10px 15px;
+  }
