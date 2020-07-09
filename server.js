@@ -14,11 +14,8 @@ app.use(express.json());
 // import routes
 
 const productsRoute = require('./routes/products');
-const productsMaxPrice = require('./routes/productsMaxPrice');
 
 app.use('/products', productsRoute);
-app.use('/products/maxPrice', productsMaxPrice);
-
 
 const PORT = process.env.PORT || 5000;
 

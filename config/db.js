@@ -10,7 +10,7 @@ try {
         useFindAndModify: false,
         useUnifiedTopology: true
     });
-    console.log('mongoDB connected')
+    console.log('mongoDB connected');
 
 } catch (err) {
     console.log(err.message);

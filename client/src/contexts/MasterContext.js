@@ -18,7 +18,7 @@ export class MasterProvider extends Component {
 
             this.setState( prevState => {
                 return {
-                    tiles: [...res],
+                    tiles: [...res.payload],
                     loading: false
                 }
             });

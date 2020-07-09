@@ -1,47 +1,51 @@
 import React, {useContext, useState, useEffect} from 'react';
 import {MasterContext} from '../contexts/MasterContext';
+import MaxPrice from './MaxPrice';
+import ProductsResults from './ProductsResults';
+const queryString = require('query-string');
 
-const AllProducts = () => {
+const AllProducts = (props) => {
 
-    const {fetchData, tiles, loadProducts} = useContext(MasterContext);
+    const {fetchData, tiles, loadProducts, loading} = useContext(MasterContext);
     const [productsShowCount, setProductsCount] = useState(1);
+    const [previousPage, setPreviousPage] = useState(null);
+    const [nextPage, setNextPage] = useState(null);
+    const limit = 5;
+    const maxPrice = 'maxPrice';
+
+    const URL_STRING = queryString.parse(props.location.search);
+    const URL_PARAM = Object.keys(URL_STRING)[0];
+    const URL_VAL = Object.values(URL_STRING)[0];
+
+    const FETCH_URL = (URL_PARAM === maxPrice) ? `http://localhost:5000/products?maxPrice=${URL_VAL}` : `http://localhost:5000/products?page=${productsShowCount}&limit=${limit}`;
 
     useEffect(() => {
-        fetchData(`http://localhost:5000/products?page=${productsShowCount}`)
+        fetchData(FETCH_URL)
             .then(res => {
                 loadProducts(res);
+                setPreviousPage(res.metaData.previous);
+                setNextPage(res.metaData.next);
             })
-    }, [fetchData, productsShowCount, loadProducts]);
-
-    return ( 
+    }, [fetchData, productsShowCount, loadProducts, FETCH_URL]);
+ 
+   return ( 
         <main className="all-products">
-           <h1>All Products</h1>
-           <ul>
-            {(tiles) && ( 
-                tiles.map((item) => (
-                    <li key={item.id}>name: {item.name} - price: {item.price} stock: {item.stock}</li>
-                ))
-            )}
+           {(loading) ? (<p>loading...</p>) : (
+               (URL_PARAM === maxPrice) ? (
 
-            </ul>
-            {/* 
-                I've added a check to see if the productsShowCount is at a certain page number.  
-                this is so that the products page never returns a blank result. 
-                I've hard-coded it, which isn't ideal, however, I was trying to utilise my time.
-             */}
+                <MaxPrice tiles={tiles} price={URL_VAL}/>
 
-             <button onClick={() => {
-                (productsShowCount === 1) ? alert('No previous Products') : setProductsCount(productsShowCount - 1)
-            }}>Previous</button>
-
-            <button onClick={() => {
-                (productsShowCount === 3) ? alert('No more Products') : setProductsCount(productsShowCount + 1) 
-            }}>Next</button>
-
-            <p>check the maxPrice of a product by visiting: "http://localhost:3000/maxPrice/*priceNumber*"</p>
-            <p>example: http://localhost:3000/maxPrice/0.75</p>
-            <p>You can search for a single product by the product ID:</p>
-            <p>example: http://localhost:3000/products/4</p>
+               ) : (
+                <ProductsResults 
+                    tiles={tiles} 
+                    previousPage={previousPage} 
+                    setProductsCount={setProductsCount} 
+                    productsShowCount={productsShowCount} 
+                    nextPage={nextPage} 
+                    limit={limit}/>
+               )
+           )}
+           
 
         </main>
      );

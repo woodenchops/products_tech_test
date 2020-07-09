@@ -2,17 +2,58 @@ const Products = require('../models/Products');
 
 exports.getPosts = async (req, res) => {
 
-    const pagination =  await req.query.pagination ? parseInt(req.query.pagination) : 5;
-    const page =  await req.query.page ? parseInt(req.query.page) : 1;
+    const page = parseInt(req.query.page);
+    const limit = parseInt(req.query.limit);
+    const maxPrice = parseFloat(req.query.maxPrice);
+    
+    const startIndex = (page - 1) * limit;
+    const endIndex = page * limit;
+    
+    const totalDocs = await Products.countDocuments({});
+
+    const results = {};
+
+    results.totalDocuments = {
+        total: totalDocs
+    };
+    
+    if(startIndex > 0) {
+    
+        results.previous = {
+            page: page - 1,
+            limit: limit,
+        };
+    
+    }
+    
+    if(endIndex < totalDocs) {
+           
+        results.next = {
+            page: page + 1,
+            limit: limit
+        };
+    
+    }
+
+if(maxPrice) {
+
+    await Products.find({price: {$lte: parseFloat(maxPrice)}})
+      .then(posts => res.json({metaData: results, payload: posts}))
+      .catch(err => res.status(400).json('Err ' + err))
+
+} else {
     try {
-       await Products.find({ "stock": { $ne: "0" } }).sort({ price: 1 })
-        .skip((page - 1) * pagination)
-        .limit(pagination)
-        .then(posts => res.json(posts))
+        await Products.find({ "stock": { $ne: "0" } }).sort({ price: 1 })
+        .skip(startIndex)
+        .limit(limit)
+        .then(posts => res.json({metaData: results, payload: posts}))
         .catch(err => res.status(400).json('Error:' + err)); 
     } catch (error) {
         console.log(error);
     }
+
+}
+    
 
 };
 

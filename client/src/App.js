@@ -8,8 +8,6 @@ import StyledWelcomePage from './components/StyledWelcomePage';
 import Home from './components/Home';
 import Nav from './components/Nav';
 import WelcomePage from './components/WelcomePage';
-import MaxPrice from './components/MaxPrice';
-
 
 function App() {
   return (
@@ -24,7 +22,6 @@ function App() {
               <Route exact path="/welcome-styled" component={StyledWelcomePage}/>
               <Route exact path="/products" component={AllProducts}/>
               <Route exact path="/products/:slug" component={SingleProduct}/>
-              <Route exact path="/maxPrice/:slug" component={MaxPrice}/>
           </Switch>
         </MasterProvider>
       </BrowserRouter>
