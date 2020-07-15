@@ -5,6 +5,7 @@ const SingleProduct = (props) => {
 
     const {fetchData} = useContext(MasterContext);
     const [singleProduct, setSingleProduct] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     const productID = props.match.params.slug;
 
@@ -12,11 +13,14 @@ const SingleProduct = (props) => {
         fetchData(`http://localhost:5000/products/${productID}`)
             .then(res => {
                 setSingleProduct(res);
+                setLoading(false);
             })
     }, [fetchData, productID]) 
 
 
-    return ( 
+    return (
+        (loading) ? (<p>loading...</p>) : (
+
         <div>
             <h1>hello from single product {productID}</h1>
             <ul>
@@ -24,14 +28,15 @@ const SingleProduct = (props) => {
                
                 singleProduct.map((item) => (
                     <Fragment>
-                        <li key={item.id}>name: {item.name} - price: {item.price} stock: {item.stock}</li>
-                        {(item.stock === 0) && (<p>Sorry, this item is out of stock</p>)}
+                        <li key={item.id}>name: {item.name} - price: {item.price} stock: {item.stock} - {(item.stock === 0) && (<span>Sorry, this item is out of stock</span>)}</li> 
                     </Fragment>
                 ))
                 
             ): <p>No item with that ID {productID} exists</p>}
             </ul>
         </div>
+
+        )
      );
 }
  

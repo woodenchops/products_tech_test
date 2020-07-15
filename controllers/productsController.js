@@ -1,6 +1,8 @@
 const Products = require('../models/Products');
+const catchAsync = require('../utils/CatchAsync');
+const AppError = require('../utils/AppError');
 
-exports.getPosts = async (req, res) => {
+exports.getPosts = catchAsync (async (req, res, next) => {
 
     const page = parseInt(req.query.page);
     const limit = parseInt(req.query.limit);
@@ -42,29 +44,30 @@ if(maxPrice) {
       .catch(err => res.status(400).json('Err ' + err))
 
 } else {
-    try {
-        await Products.find({ "stock": { $ne: "0" } }).sort({ price: 1 })
+ 
+      await Products.find({ "stock": { $ne: "0" } }).sort({ price: 1 })
         .skip(startIndex)
         .limit(limit)
         .then(posts => res.json({metaData: results, payload: posts}))
         .catch(err => res.status(400).json('Error:' + err)); 
-    } catch (error) {
-        console.log(error);
-    }
+  
 
 }
     
 
-};
+});
 
-exports.getSingleProduct = async (req, res) => {
+exports.getSingleProduct = catchAsync(async (req, res, next) => {
 
-    try {
+    const singleProduct = await Products.find({id: req.params.slug})
+
+    if(singleProduct.length <= 0) {
+        return next(new AppError(`cant find that product: ${req.params.slug}`, 404));
+    }
+
     await Products.find({id: req.params.slug})
       .then(post => res.json(post))
-      .catch(err => res.status(400).json('Err ' + err))
-    } catch (error) {
-        console.log(error);
-    }
+      .catch(err => res.status(400).json('Err ' + err));
+ 
      
-  };
+  });

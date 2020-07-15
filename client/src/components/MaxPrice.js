@@ -7,16 +7,15 @@ const MaxPrice = ({tiles, price}) => {
             <h1>max Price: {`£ ${price}`}</h1>
             <p>results: {tiles.length}</p>
             <ul>
-            {(tiles) && (
+            {(tiles.length > 0) ? (
                
                 tiles.map((item) => (
                     <Fragment>
-                        <li key={item.id}> name: {item.name} - price: {item.price} stock: {item.stock}</li>
-                        {(item.stock === 0) && (<p>Sorry, this item is out of stock</p>)}
+                        <li key={item.id}> name: {item.name} - price: {item.price} stock: {item.stock} {(item.stock === 0) && (<span> - Sorry, this item is out of stock</span>)}</li>
                     </Fragment>
                 ))
                 
-            )}
+            ) : (<p>No product matches that price limit</p>)}
             </ul>
         </div>
      );
