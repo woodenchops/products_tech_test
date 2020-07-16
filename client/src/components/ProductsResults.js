@@ -1,6 +1,9 @@
 import React, { Fragment } from 'react';
 
-const ProductsResults = ({tiles, previousPage, setProductsCount, productsShowCount, nextPage, limit}) => {
+const ProductsResults = ({tiles, previousPage, setProductsCount, productsShowCount, nextPage, limit, totalDocs}) => {
+
+    const totalPages = Math.ceil(totalDocs / limit);
+ 
     return ( 
         <Fragment>
         <h1>All Products</h1>
@@ -22,7 +25,7 @@ const ProductsResults = ({tiles, previousPage, setProductsCount, productsShowCou
                 (nextPage === undefined || tiles.length < limit) ? alert('No more Products') : setProductsCount(productsShowCount + 1) 
             }}>Next</button>
 
-            <p>{`${productsShowCount} / 3`}</p>
+            <p>{`${productsShowCount} / ${totalPages}`}</p>
 
             <p>check the maxPrice of a product by visiting: "http://localhost:3000/products?maxPrice=*price*"</p>
             <p>example: http://localhost:3000/products?maxPrice=0.75</p>

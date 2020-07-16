@@ -7,15 +7,18 @@ const queryString = require('query-string');
 const AllProducts = (props) => {
 
     const {fetchData, tiles, loadProducts, loading} = useContext(MasterContext);
-    const [productsShowCount, setProductsCount] = useState(1);
     const [previousPage, setPreviousPage] = useState(null);
     const [nextPage, setNextPage] = useState(null);
-    const limit = 5;
+    const [totalDocs, setTotalDocs] = useState(null);
+    const [productsShowCount, setProductsCount] = useState(1);
+    const [limit, setlimit] = useState(13);
     const maxPrice = 'maxPrice';
 
     const URL_STRING = queryString.parse(props.location.search);
     const URL_PARAM = Object.keys(URL_STRING)[0];
     const URL_VAL = Object.values(URL_STRING)[0];
+    
+    console.log('BOB', URL_PARAM);
 
     const FETCH_URL = (URL_PARAM === maxPrice) ? `http://localhost:5000/products?maxPrice=${URL_VAL}` : `http://localhost:5000/products?page=${productsShowCount}&limit=${limit}`;
 
@@ -25,6 +28,8 @@ const AllProducts = (props) => {
                 loadProducts(res);
                 setPreviousPage(res.metaData.previous);
                 setNextPage(res.metaData.next);
+                setTotalDocs(res.metaData.totalDocuments.criteriaBasedResults);
+
             })
     }, [fetchData, productsShowCount, loadProducts, FETCH_URL]);
  
@@ -38,6 +43,7 @@ const AllProducts = (props) => {
                ) : (
                 <ProductsResults 
                     tiles={tiles} 
+                    totalDocs={totalDocs}
                     previousPage={previousPage} 
                     setProductsCount={setProductsCount} 
                     productsShowCount={productsShowCount} 

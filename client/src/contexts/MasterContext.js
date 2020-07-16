@@ -21,7 +21,7 @@ export class MasterProvider extends Component {
                     tiles: [...res.payload],
                     loading: false
                 }
-            });
+            }, () => console.log(this.state.tiles));
             
         }
 

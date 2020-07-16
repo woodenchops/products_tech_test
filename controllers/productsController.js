@@ -11,12 +11,16 @@ exports.getPosts = catchAsync (async (req, res, next) => {
     const startIndex = (page - 1) * limit;
     const endIndex = page * limit;
     
+    // total length of docs in collection
     const totalDocs = await Products.countDocuments({});
+    // total length of docs in collection that meet requirements of filter e.g { "stock": { $ne: "0" } }
+    const criteriaBasedResults = await Products.countDocuments({ "stock": { $ne: "0" } })
 
     const results = {};
 
     results.totalDocuments = {
-        total: totalDocs
+        total: totalDocs,
+        criteriaBasedResults: criteriaBasedResults
     };
     
     if(startIndex > 0) {
@@ -28,7 +32,7 @@ exports.getPosts = catchAsync (async (req, res, next) => {
     
     }
     
-    if(endIndex < totalDocs) {
+    if(endIndex < criteriaBasedResults) {
            
         results.next = {
             page: page + 1,
