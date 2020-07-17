@@ -6,21 +6,19 @@ const queryString = require('query-string');
 
 const AllProducts = (props) => {
 
+    const URL_STRING = queryString.parse(props.location.search);
+
+    let defaultPage = (URL_STRING.page) ? (parseInt(URL_STRING.page)) : 1;
+    let defaultlimit = (URL_STRING.limit) ? (URL_STRING.limit) : 5;
+
     const {fetchData, tiles, loadProducts, loading} = useContext(MasterContext);
     const [previousPage, setPreviousPage] = useState(null);
     const [nextPage, setNextPage] = useState(null);
     const [totalDocs, setTotalDocs] = useState(null);
-    const [productsShowCount, setProductsCount] = useState(1);
-    const [limit, setlimit] = useState(13);
-    const maxPrice = 'maxPrice';
+    const [productsShowCount, setProductsCount] = useState(defaultPage);
+    const [limit, setlimit] = useState(defaultlimit);
 
-    const URL_STRING = queryString.parse(props.location.search);
-    const URL_PARAM = Object.keys(URL_STRING)[0];
-    const URL_VAL = Object.values(URL_STRING)[0];
-    
-    console.log('BOB', URL_PARAM);
-
-    const FETCH_URL = (URL_PARAM === maxPrice) ? `http://localhost:5000/products?maxPrice=${URL_VAL}` : `http://localhost:5000/products?page=${productsShowCount}&limit=${limit}`;
+    const FETCH_URL = (URL_STRING.maxPrice) ? `http://localhost:5000/products?maxPrice=${URL_STRING.maxPrice}` : `http://localhost:5000/products?page=${productsShowCount}&limit=${limit}`;
 
     useEffect(() => {
         fetchData(FETCH_URL)
@@ -36,9 +34,9 @@ const AllProducts = (props) => {
    return ( 
         <main className="all-products">
            {(loading) ? (<p>loading...</p>) : (
-               (URL_PARAM === maxPrice) ? (
+               (URL_STRING.maxPrice) ? (
 
-                <MaxPrice tiles={tiles} price={URL_VAL}/>
+                <MaxPrice tiles={tiles} price={URL_STRING.maxPrice}/>
 
                ) : (
                 <ProductsResults 

@@ -22,13 +22,13 @@ const SingleProduct = (props) => {
         (loading) ? (<p>loading...</p>) : (
 
         <div>
-            <h1>hello from single product {productID}</h1>
+            <h1>single product {productID}</h1>
             <ul>
             {(singleProduct.length > 0) ? (
                
                 singleProduct.map((item) => (
                     <Fragment>
-                        <li key={item.id}>name: {item.name} - price: {item.price} stock: {item.stock} - {(item.stock === 0) && (<span>Sorry, this item is out of stock</span>)}</li> 
+                        <li key={item.id}>name: {item.name} - price: {item.price} stock: {item.stock} {(item.stock === 0) && (<span> - Sorry, this item is out of stock</span>)}</li> 
                     </Fragment>
                 ))
                 
